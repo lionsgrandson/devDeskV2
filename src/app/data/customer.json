@@ -1,0 +1,31 @@
+[
+	{
+		"id": "CLIENT-001",
+		"name": "Demo Client A",
+		"email": "client-a@example.com",
+		"phone": "050-000-0001",
+		"address": { "city": "Tel Aviv", "country": "Israel" }
+	},
+
+	{
+		"id": "CLIENT-002",
+		"name": "Demo Client B",
+		"email": "client-b@example.com",
+		"phone": "050-000-0002",
+		"address": { "city": "Haifa", "country": "Israel" }
+	},
+	{
+		"id": "CLIENT-003",
+		"name": "Demo Client C",
+		"email": "client-c@example.com",
+		"phone": "050-000-0003",
+		"address": { "city": "Jerusalem", "country": "Israel" }
+	},
+	{
+		"id": "CLIENT-004",
+		"name": "Demo Client D",
+		"email": "client-d@example.com",
+		"phone": "050-000-0004",
+		"address": { "city": "Kfar Yona", "country": "Israel" }
+	}
+]

@@ -29,36 +29,36 @@ The frontend is based on [Devias Material Kit React](https://github.com/devias-i
 
 The Next.js frontend stays at the repository root.
 
-~~~text
+```text
 DevDesk/
 ├── public/
 ├── src/
 ├── package.json
 ├── pnpm-lock.yaml
 └── README.md
-~~~
+```
 
 A separate `backend/` application should be added only when the project reaches the backend stage.
 
 ## Quick start
 
-~~~bash
+```bash
 pnpm install
 pnpm dev
-~~~
+```
 
 Open:
 
-~~~text
+```text
 http://localhost:3000
-~~~
+```
 
 Demo login:
 
-~~~text
+```text
 Email: demo@devdesk.local
 Password: Secret1
-~~~
+```
 
 ## Build it gradually
 
@@ -66,7 +66,7 @@ Password: Secret1
 
 Start with one real feature.
 
-- [ ] Move the demo client data into component state
+- [V] Move the demo client data into component state - created a JSON file imported it with the same name "cusotmers" as the current variable
 - [ ] Add a working Add Client form
 - [ ] Edit a client
 - [ ] Delete a client
@@ -97,7 +97,7 @@ This stage teaches the difference between React state and persistence.
 
 Create a separate Express API under `backend/`.
 
-~~~text
+```text
 Browser
    |
    v
@@ -106,17 +106,17 @@ Next.js frontend
    | JSON / REST
    v
 Node.js + Express API
-~~~
+```
 
 Start only with clients:
 
-~~~http
+```http
 GET    /api/clients
 GET    /api/clients/:id
 POST   /api/clients
 PATCH  /api/clients/:id
 DELETE /api/clients/:id
-~~~
+```
 
 Use Zod for request validation and return consistent API errors.
 
