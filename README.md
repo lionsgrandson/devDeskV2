@@ -1,12 +1,14 @@
 # DevDesk
 
-DevDesk is a full-stack learning project built to teach modern web development by building a real SaaS-style application that combines ideas from Jira, Trello, a CRM, and a client portal.
+DevDesk is a full-stack learning project built around a real small-business operations platform.
 
-The project starts from the open-source [Devias Material Kit React](https://github.com/devias-io/material-kit-react) admin dashboard instead of building the visual shell from scratch.
+The application is not primarily a task manager. Its core purpose is to give a business owner or internal team one place to understand and manage the state of the business: customers, sales, budget, profit, orders, products or services, operational progress, integrations, and account settings.
 
-That changes the learning goal slightly: the UI kit gives DevDesk a professional starting layout, but the application logic, data flow, API, database, authentication, authorization, testing, security, and deployment still need to be built and understood.
+The current frontend is based on the open-source [Devias Material Kit React](https://github.com/devias-io/material-kit-react) admin dashboard. The starter already includes a business-oriented overview with budget, customer count, task progress, profit, sales trends, traffic, products, and recent orders, plus customer, integration, account, and settings areas.
 
-The goal is not to rush to the finished product. Each stage should introduce a manageable new concept only after the previous stage works.
+DevDesk will turn that UI foundation into a real data-driven business management system. Project and task management may exist as operational modules, but they are only one part of the platform rather than the product's central identity.
+
+The learning goal is to build the real application logic behind that dashboard: APIs, business data, reporting, persistence, authentication, authorization, integrations, testing, security, and production deployment.
 
 ---
 
@@ -63,7 +65,7 @@ pnpm format:check
 
 Treat Material Kit as the presentation foundation, not as the application architecture.
 
-Do not blindly keep demo data, fake authentication, sample customers, or template-specific business logic. Replace those parts gradually with DevDesk features that you understand.
+Do not blindly keep demo data, fake authentication, sample customers, sample orders, products, or hard-coded financial metrics. Replace them gradually with real DevDesk business entities and API-backed data that you understand.
 
 ---
 
@@ -115,7 +117,7 @@ The frontend is responsible for:
 - Rendering pages and reusable UI components
 - Navigation
 - Forms
-- Client-side interaction
+- Customer-side interaction
 - Loading and error states
 - Calling the backend API
 - Displaying authenticated user state
@@ -137,17 +139,22 @@ DevDesk/
 │   ├── app/
 │   │   ├── auth/
 │   │   ├── dashboard/
-│   │   ├── clients/
-│   │   ├── projects/
-│   │   ├── tasks/
+│   │   ├── customers/
+│   │   ├── sales/
+│   │   ├── orders/
+│   │   ├── products/
+│   │   ├── operations/
+│   │   ├── integrations/
 │   │   └── settings/
 │   ├── components/
 │   ├── contexts/
 │   ├── features/
 │   │   ├── auth/
-│   │   ├── clients/
-│   │   ├── projects/
-│   │   └── tasks/
+│   │   ├── customers/
+│   │   ├── sales/
+│   │   ├── orders/
+│   │   ├── products/
+│   │   └── operations/
 │   ├── hooks/
 │   ├── lib/
 │   │   ├── api/
@@ -204,9 +211,11 @@ backend/
 │   ├── middleware/
 │   ├── modules/
 │   │   ├── auth/
-│   │   ├── clients/
-│   │   ├── projects/
-│   │   ├── tasks/
+│   │   ├── customers/
+│   │   ├── sales/
+│   │   ├── orders/
+│   │   ├── products/
+│   │   ├── operations/
 │   │   └── users/
 │   ├── routes/
 │   ├── services/
@@ -261,32 +270,42 @@ This separation is intentional because the project is meant to teach how indepen
 Initial domain tables:
 
 - users
-- clients
-- projects
-- tasks
+- customers
+- sales
+- orders
+- products
+- financial_snapshots or budget_entries
 
 Later tables may include:
 
+- projects
+- tasks
 - project_members
-- comments
-- messages
-- notifications
-- files
 - invoices
 - invoice_items
+- integrations
+- notifications
+- files
 - activity_logs
 - refresh_tokens or sessions
 
 ### Core relationships
 
 ~~~text
-Client
-  └── Projects
-       └── Tasks
+Customer
+  ├── Orders
+  ├── Sales
+  └── Invoices
 
-User
-  ├── Assigned Tasks
-  └── Project Memberships
+Order
+  └── Order Items
+       └── Products
+
+Business
+  ├── Budget / financial entries
+  ├── Sales metrics
+  ├── Operational work
+  └── Integrations
 ~~~
 
 Use Prisma to make application development practical, but learn the SQL concepts underneath the ORM.
@@ -297,35 +316,38 @@ Use Prisma to make application development practical, but learn the SQL concepts
 
 Start with REST.
 
-Example task routes:
+Example customer routes:
 
 ~~~http
-GET    /api/tasks
-GET    /api/tasks/:id
-POST   /api/tasks
-PATCH  /api/tasks/:id
-DELETE /api/tasks/:id
+GET    /api/customers
+GET    /api/customers/:id
+POST   /api/customers
+PATCH  /api/customers/:id
+DELETE /api/customers/:id
 ~~~
 
-Example project routes:
+Example sales and dashboard routes:
 
 ~~~http
-GET    /api/projects
-GET    /api/projects/:id
-POST   /api/projects
-PATCH  /api/projects/:id
-DELETE /api/projects/:id
-GET    /api/projects/:id/tasks
+GET    /api/dashboard/summary
+GET    /api/sales
+GET    /api/sales/summary
+GET    /api/budget
+GET    /api/profit
 ~~~
 
-Example client routes:
+Example orders and products routes:
 
 ~~~http
-GET    /api/clients
-GET    /api/clients/:id
-POST   /api/clients
-PATCH  /api/clients/:id
-DELETE /api/clients/:id
+GET    /api/orders
+GET    /api/orders/:id
+POST   /api/orders
+PATCH  /api/orders/:id
+
+GET    /api/products
+GET    /api/products/:id
+POST   /api/products
+PATCH  /api/products/:id
 ~~~
 
 The API should eventually return consistent success and error formats.
@@ -336,8 +358,8 @@ Example error:
 {
   "success": false,
   "error": {
-    "code": "PROJECT_NOT_FOUND",
-    "message": "Project does not exist"
+    "code": "CUSTOMER_NOT_FOUND",
+    "message": "Customer does not exist"
   }
 }
 ~~~
@@ -346,23 +368,24 @@ Example error:
 
 # Final Application
 
-DevDesk will eventually include:
+DevDesk will eventually become a general business operations workspace with:
 
-- Dashboard
-- User accounts
-- Clients
-- Projects
-- Tasks
-- Kanban board
-- Team members
-- Role-based permissions
-- Client portal
-- Messages
-- File uploads
+- Executive dashboard
+- Budget and financial overview
+- Sales and revenue tracking
+- Profit reporting
+- Customer management / CRM
+- Orders
+- Products or services
+- Operational progress
+- Projects and tasks where useful
+- Team members and role-based permissions
+- Integrations
+- Invoices and payment status
 - Notifications
 - Search
-- Invoices
-- Activity history
+- Files and activity history
+- Account and business settings
 - Testing
 - Security
 - Production deployment
@@ -371,15 +394,25 @@ Example application structure:
 
 ~~~text
 DevDesk
-├── Dashboard
-├── Clients
-├── Projects
-├── Tasks
-├── Team
-├── Messages
-├── Files
+├── Overview
+│   ├── Budget
+│   ├── Sales
+│   ├── Profit
+│   ├── Customers
+│   ├── Traffic
+│   └── Operational progress
+├── Customers
+├── Sales
+├── Orders
+├── Products / Services
+├── Operations
+│   ├── Projects
+│   └── Tasks
 ├── Invoices
+├── Integrations
+├── Team
 ├── Notifications
+├── Account
 └── Settings
 ~~~
 
@@ -424,30 +457,24 @@ Do not redesign the template before you understand how it is assembled.
 
 ---
 
-## Stage 1: React Fundamentals Inside the Starter
+## Stage 1: React Fundamentals Inside the Business Dashboard
 
 ### Goal
 
-Build a basic task manager using the Devias UI shell with no backend and no database.
+Turn one existing hard-coded business area into an interactive local React feature before introducing a backend.
 
-A task should contain:
-
-- Title
-- Description
-- Status
-- Priority
-- Due date
+A good first module is customers or orders because the existing starter already exposes those concepts.
 
 ### Features
 
-- [ ] Display a list of tasks
-- [ ] Create reusable TaskCard or TaskRow components
-- [ ] Create tasks
-- [ ] Mark tasks complete
-- [ ] Delete tasks
-- [ ] Display task priority
-- [ ] Display task status
-- [ ] Use Material UI forms and buttons without hiding the React logic
+- [ ] Display a local list of customers or orders
+- [ ] Create reusable business-data components
+- [ ] Add a customer or order through a controlled form
+- [ ] Edit an existing record
+- [ ] Delete a record
+- [ ] Filter and sort the list
+- [ ] Update at least one dashboard metric from local state
+- [ ] Use Material UI forms, tables, cards, and dialogs without hiding the React logic
 
 ### Concepts to learn
 
@@ -465,7 +492,7 @@ A task should contain:
 
 ### Rule
 
-All task data may disappear on refresh. That is intentional.
+All locally created business data may disappear on refresh. That is intentional.
 
 ---
 
@@ -473,12 +500,11 @@ All task data may disappear on refresh. That is intentional.
 
 ### Features
 
-- [ ] Task editing
-- [ ] Task search
-- [ ] Task filtering
-- [ ] Task sorting
-- [ ] Project list
-- [ ] Project details page
+- [ ] Customer search, filtering, and sorting
+- [ ] Orders list and order details
+- [ ] Products or services list
+- [ ] Sales view
+- [ ] Budget / financial view
 - [ ] Dashboard navigation
 - [ ] Not-found page
 
@@ -486,10 +512,14 @@ All task data may disappear on refresh. That is intentional.
 
 ~~~text
 /dashboard
-/dashboard/projects
-/dashboard/projects/[id]
-/dashboard/projects/[id]/tasks
-/dashboard/tasks
+/dashboard/customers
+/dashboard/customers/[id]
+/dashboard/sales
+/dashboard/orders
+/dashboard/orders/[id]
+/dashboard/products
+/dashboard/budget
+/dashboard/integrations
 /dashboard/settings
 ~~~
 
@@ -501,7 +531,7 @@ All task data may disappear on refresh. That is intentional.
 - Search parameters
 - Layouts
 - Navigation
-- Client vs server components
+- Customer vs server components
 - useEffect
 - useMemo
 - Component composition
@@ -522,9 +552,9 @@ Do not add React Router. Next.js already provides routing.
 
 ### Features
 
-- [ ] Save tasks to localStorage
-- [ ] Load tasks after refresh
-- [ ] Save projects locally
+- [ ] Save sample customers or orders to localStorage
+- [ ] Load them after refresh
+- [ ] Persist simple dashboard preferences or filters locally
 - [ ] Build a reusable local-storage hook
 - [ ] Handle browser-only APIs correctly in Next.js
 
@@ -535,7 +565,7 @@ Do not add React Router. Next.js already provides routing.
 - Side effects
 - useEffect dependencies
 - Custom hooks
-- Client-only browser APIs
+- Customer-only browser APIs
 
 ### Main lesson
 
@@ -585,10 +615,11 @@ http://localhost:4000
 - [ ] Configure environment variables
 - [ ] Configure CORS for the frontend origin
 - [ ] Connect the Next.js frontend to the Express API
-- [ ] Load tasks from the API
-- [ ] Create tasks through the API
-- [ ] Update tasks through the API
-- [ ] Delete tasks through the API
+- [ ] Load customers or orders from the API
+- [ ] Create records through the API
+- [ ] Update records through the API
+- [ ] Delete records through the API
+- [ ] Replace at least one hard-coded dashboard KPI with API data
 - [ ] Add server-side Zod validation
 - [ ] Add centralized error handling
 
@@ -609,7 +640,7 @@ http://localhost:4000
 - Express middleware
 - CORS
 - Async/await
-- Client/server separation
+- Customer/server separation
 - Environment configuration
 - Validation
 
@@ -626,19 +657,22 @@ http://localhost:4000
 ### Initial tables
 
 - users
-- clients
-- projects
-- tasks
+- customers
+- products
+- orders
+- order_items
+- sales
+- budget_entries
 
 ### Features
 
 - [ ] Connect backend to PostgreSQL
 - [ ] Initialize Prisma
-- [ ] Store tasks permanently
-- [ ] Create clients
-- [ ] Create projects
-- [ ] Assign tasks to projects
-- [ ] Relate projects to clients
+- [ ] Store customers permanently
+- [ ] Store products and orders
+- [ ] Relate orders to customers
+- [ ] Relate order items to products
+- [ ] Store sales / financial records needed by dashboard metrics
 - [ ] Add migrations
 - [ ] Add seed data
 
@@ -716,15 +750,15 @@ Do not store long-lived authentication credentials in localStorage.
 - Admin
 - Manager
 - Developer
-- Client
+- Customer
 
 ### Features
 
 - [ ] Add roles to users
 - [ ] Admin can manage everything
-- [ ] Manager can manage projects and tasks
-- [ ] Developer can manage assigned work
-- [ ] Client can view only their own projects
+- [ ] Manager can manage operational business data
+- [ ] Staff can work with the modules relevant to their role
+- [ ] Customer/customer portal users can access only data explicitly exposed to them
 - [ ] Protect backend routes by permission
 - [ ] Add resource ownership checks
 - [ ] Hide unavailable frontend actions
@@ -781,21 +815,17 @@ Permissions must be enforced by the backend.
 
 ---
 
-## Stage 9: Kanban Board
+## Stage 9: Operations and Work Management
 
-### Columns
-
-- Todo
-- In Progress
-- Review
-- Done
+Projects, tasks, and Kanban-style workflows can be added here as an operations module. They support the broader business platform rather than define it.
 
 ### Features
 
-- [ ] Display project tasks as columns
-- [ ] Drag tasks between columns
-- [ ] Save new status to backend
-- [ ] Reorder tasks
+- [ ] Add projects or work items where the business needs operational tracking
+- [ ] Display work in list and/or Kanban form
+- [ ] Move work between statuses
+- [ ] Save status changes to the backend
+- [ ] Reorder work items
 - [ ] Optimistically update the UI
 - [ ] Roll back failed changes
 
@@ -810,19 +840,19 @@ Permissions must be enforced by the backend.
 
 ---
 
-## Stage 10: CRM Features
+## Stage 10: CRM and Customer Management
 
 ### Features
 
-- [ ] Client list
-- [ ] Client profile
+- [ ] Customer list
+- [ ] Customer profile
 - [ ] Contact details
-- [ ] Client notes
-- [ ] Client projects
-- [ ] Client activity history
-- [ ] Project status
-- [ ] Project deadlines
-- [ ] Assigned team members
+- [ ] Customer notes
+- [ ] Customer orders and sales history
+- [ ] Customer activity history
+- [ ] Related invoices
+- [ ] Related operational work where applicable
+- [ ] Assigned account owner or team members
 
 The Devias "Customers" example may be used as a visual/component reference, but its mock data and business logic should be replaced with DevDesk API data.
 
@@ -920,7 +950,7 @@ The Devias "Customers" example may be used as a visual/component reference, but 
 
 ### Features
 
-- [ ] Search clients
+- [ ] Search customers
 - [ ] Search projects
 - [ ] Search tasks
 - [ ] Search users
@@ -947,7 +977,7 @@ The Devias "Customers" example may be used as a visual/component reference, but 
 
 ### Features
 
-- [ ] Paginate client lists
+- [ ] Paginate customer lists
 - [ ] Paginate projects
 - [ ] Paginate tasks
 - [ ] Add page-size controls
@@ -1034,7 +1064,7 @@ GET /api/tasks?page=3&limit=25
 
 ### Security exercise
 
-Attempt to request another client's project by changing an ID in the URL.
+Attempt to request another customer's project by changing an ID in the URL.
 
 The backend must reject access even if the resource exists.
 
@@ -1072,10 +1102,10 @@ Example E2E flow:
 ~~~text
 Register
 -> Login
--> Create Client
--> Create Project
--> Create Task
--> Move Task
+-> Create Customer
+-> Create Product
+-> Create Order
+-> See dashboard metrics update
 -> Logout
 ~~~
 
@@ -1121,9 +1151,9 @@ Register
 
 Generate enough fake data to expose weak architecture:
 
-- 10,000 clients
-- 100,000 projects
-- 1,000,000 tasks
+- 10,000 customers
+- 100,000 orders
+- 1,000,000 order items
 
 These numbers are local stress-test targets, not production requirements.
 
@@ -1345,12 +1375,13 @@ A useful rule for deciding where code belongs:
 
 Examples:
 
-- Open a task modal
-- Render a project list
+- Open a customer or order dialog
+- Render sales and financial cards
+- Render a customer or orders table
 - Disable a submit button while saving
 - Show validation feedback
 - Display API errors
-- Change Kanban columns visually
+- Update charts and dashboard metrics
 
 ### Backend
 
@@ -1373,11 +1404,12 @@ Examples:
 Examples:
 
 - Users
-- Clients
-- Projects
-- Tasks
-- Assignments
-- Messages
+- Customers
+- Sales
+- Orders
+- Products or services
+- Budget and financial records
+- Projects and tasks where needed
 - Invoices
 - Activity history
 
@@ -1445,4 +1477,4 @@ For each stage:
 9. Commit the change.
 10. Move to the next task.
 
-The objective is to progress from React fundamentals inside a professional UI starter to being able to design, build, secure, test, deploy, and maintain a complete full-stack application.
+The objective is to progress from React fundamentals inside a professional business dashboard to being able to design, build, secure, test, deploy, and maintain a complete full-stack business management application.
