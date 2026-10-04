@@ -14,29 +14,20 @@ export const metadata = { title: `Not found | ${config.site.name}` } satisfies M
 
 export default function NotFound(): React.JSX.Element {
   return (
-    <Box component="main" sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', minHeight: '100%' }}>
-      <Stack spacing={3} sx={{ alignItems: 'center', maxWidth: 'md' }}>
-        <Box>
-          <Box
-            component="img"
-            alt="Under development"
-            src="/assets/error-404.png"
-            sx={{ display: 'inline-block', height: 'auto', maxWidth: '100%', width: '400px' }}
-          />
-        </Box>
-        <Typography variant="h3" sx={{ textAlign: 'center' }}>
-          404: The page you are looking for isn&apos;t here
-        </Typography>
-        <Typography color="text.secondary" variant="body1" sx={{ textAlign: 'center' }}>
-          You either tried some shady route or you came here by mistake. Whichever it is, try using the navigation
+    <Box component="main" sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', minHeight: '100vh', p: 3 }}>
+      <Stack spacing={3} sx={{ alignItems: 'center', maxWidth: 560, textAlign: 'center' }}>
+        <Typography variant="h2">404</Typography>
+        <Typography variant="h4">Page not found</Typography>
+        <Typography color="text.secondary" variant="body1">
+          The page does not exist or has been removed.
         </Typography>
         <Button
           component={RouterLink}
-          href={paths.home}
+          href={paths.dashboard.overview}
           startIcon={<ArrowLeftIcon fontSize="var(--icon-fontSize-md)" />}
           variant="contained"
         >
-          Go back to home
+          Back to DevDesk
         </Button>
       </Stack>
     </Box>
