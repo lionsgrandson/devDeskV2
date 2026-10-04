@@ -5,26 +5,26 @@ import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import type { SxProps } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { UsersIcon } from '@phosphor-icons/react/dist/ssr/Users';
+import { CurrencyDollarIcon } from '@phosphor-icons/react/dist/ssr/CurrencyDollar';
 
-export interface TotalCustomersProps {
+export interface RevenueProps {
   sx?: SxProps;
   value: string;
 }
 
-export function TotalCustomers({ sx, value }: TotalCustomersProps): React.JSX.Element {
+export function Revenue({ value, sx }: RevenueProps): React.JSX.Element {
   return (
     <Card sx={sx}>
       <CardContent>
         <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
           <Stack spacing={1}>
             <Typography color="text.secondary" variant="overline">
-              Clients
+              Revenue this month
             </Typography>
             <Typography variant="h4">{value}</Typography>
           </Stack>
-          <Avatar sx={{ backgroundColor: 'var(--mui-palette-success-main)', height: 56, width: 56 }}>
-            <UsersIcon fontSize="var(--icon-fontSize-lg)" />
+          <Avatar sx={{ backgroundColor: 'var(--mui-palette-primary-main)', height: 56, width: 56 }}>
+            <CurrencyDollarIcon fontSize="var(--icon-fontSize-lg)" />
           </Avatar>
         </Stack>
       </CardContent>
