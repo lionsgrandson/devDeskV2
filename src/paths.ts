@@ -5,5 +5,4 @@ export const paths = {
     overview: '/dashboard',
     customers: '/dashboard/customers',
   },
-  errors: { notFound: '/errors/not-found' },
 } as const;
