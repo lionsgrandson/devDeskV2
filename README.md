@@ -117,7 +117,7 @@ The frontend is responsible for:
 - Rendering pages and reusable UI components
 - Navigation
 - Forms
-- Customer-side interaction
+- Client-side interaction
 - Loading and error states
 - Calling the backend API
 - Displaying authenticated user state
@@ -531,7 +531,7 @@ All locally created business data may disappear on refresh. That is intentional.
 - Search parameters
 - Layouts
 - Navigation
-- Customer vs server components
+- Client vs server components
 - useEffect
 - useMemo
 - Component composition
@@ -565,7 +565,7 @@ Do not add React Router. Next.js already provides routing.
 - Side effects
 - useEffect dependencies
 - Custom hooks
-- Customer-only browser APIs
+- Client-only browser APIs
 
 ### Main lesson
 
@@ -640,7 +640,7 @@ http://localhost:4000
 - Express middleware
 - CORS
 - Async/await
-- Customer/server separation
+- Client/server separation
 - Environment configuration
 - Validation
 
@@ -749,7 +749,7 @@ Do not store long-lived authentication credentials in localStorage.
 
 - Admin
 - Manager
-- Developer
+- Staff
 - Customer
 
 ### Features
@@ -758,7 +758,7 @@ Do not store long-lived authentication credentials in localStorage.
 - [ ] Admin can manage everything
 - [ ] Manager can manage operational business data
 - [ ] Staff can work with the modules relevant to their role
-- [ ] Customer/customer portal users can access only data explicitly exposed to them
+- [ ] Customer portal users can access only data explicitly exposed to them
 - [ ] Protect backend routes by permission
 - [ ] Add resource ownership checks
 - [ ] Hide unavailable frontend actions
@@ -875,8 +875,8 @@ The Devias "Customers" example may be used as a visual/component reference, but 
 
 ### Features
 
-- [ ] Upload project files
-- [ ] Upload client files
+- [ ] Upload customer documents
+- [ ] Upload order, invoice, or operational files
 - [ ] Download files
 - [ ] Delete files
 - [ ] Restrict file access
@@ -930,9 +930,10 @@ The Devias "Customers" example may be used as a visual/component reference, but 
 
 - [ ] Notification center
 - [ ] Unread count
-- [ ] Task assignment notifications
-- [ ] Comment notifications
-- [ ] Project update notifications
+- [ ] New order notifications
+- [ ] Sales or payment status notifications
+- [ ] Operational assignment notifications
+- [ ] Integration failure notifications
 - [ ] Mark notification as read
 - [ ] Mark all notifications as read
 
@@ -951,8 +952,10 @@ The Devias "Customers" example may be used as a visual/component reference, but 
 ### Features
 
 - [ ] Search customers
-- [ ] Search projects
-- [ ] Search tasks
+- [ ] Search orders
+- [ ] Search products or services
+- [ ] Search invoices
+- [ ] Search operational projects or tasks where applicable
 - [ ] Search users
 - [ ] Debounced search input
 - [ ] Highlight matching results
@@ -978,8 +981,9 @@ The Devias "Customers" example may be used as a visual/component reference, but 
 ### Features
 
 - [ ] Paginate customer lists
-- [ ] Paginate projects
-- [ ] Paginate tasks
+- [ ] Paginate orders
+- [ ] Paginate products or services
+- [ ] Paginate invoices
 - [ ] Add page-size controls
 - [ ] Add API metadata
 - [ ] Later implement cursor pagination
@@ -987,7 +991,7 @@ The Devias "Customers" example may be used as a visual/component reference, but 
 Example:
 
 ~~~http
-GET /api/tasks?page=3&limit=25
+GET /api/orders?page=3&limit=25
 ~~~
 
 ### Concepts to learn
@@ -1009,8 +1013,8 @@ GET /api/tasks?page=3&limit=25
 - [ ] Calculate subtotal
 - [ ] Calculate tax
 - [ ] Mark invoice paid
-- [ ] Associate invoice with client
-- [ ] Associate invoice with project
+- [ ] Associate invoice with customer
+- [ ] Associate invoice with an order or operational project where applicable
 - [ ] Invoice history
 
 ### Concepts to learn
@@ -1064,7 +1068,7 @@ GET /api/tasks?page=3&limit=25
 
 ### Security exercise
 
-Attempt to request another customer's project by changing an ID in the URL.
+Attempt to request another customer's order, invoice, or profile by changing an ID in the URL.
 
 The backend must reject access even if the resource exists.
 
@@ -1389,11 +1393,11 @@ Examples:
 
 Examples:
 
-- Can this user access the project?
-- Does this task exist?
-- Is this status transition valid?
-- Is the client owned by this organization?
-- Should this database record be created?
+- Can this user access this customer's data?
+- Does this order exist?
+- Is this sale, refund, or financial update valid?
+- Does this record belong to the correct business or customer?
+- Should this order, payment, or operational change be created?
 - Is this uploaded file allowed?
 - Should this action be written to the audit log?
 
