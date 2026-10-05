@@ -4,14 +4,16 @@ import pluginNext from "@next/eslint-plugin-next";
 import configPrettier from "eslint-config-prettier";
 import pluginImport from "eslint-plugin-import";
 import pluginReact from "eslint-plugin-react";
+import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginUnicorn from "eslint-plugin-unicorn";
 import globals from "globals";
-import ts from "typescript-eslint";
+import { configs as tsConfigs } from "typescript-eslint";
 
 const compat = new FlatCompat();
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
+	{ ignores: [".next/**", "out/**", "next-env.d.ts"] },
 	{
 		files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
 		languageOptions: {
@@ -22,7 +24,7 @@ export default [
 		},
 	},
 	js.configs.recommended,
-	...ts.configs.recommended,
+	...tsConfigs.recommended,
 	{
 		rules: {
 			"@typescript-eslint/no-unused-vars": [
@@ -72,6 +74,13 @@ export default [
 			"react/prop-types": "off",
 		},
 	},
-	...compat.extends("plugin:react-hooks/recommended"),
-	...compat.config(pluginNext.configs.recommended),
+	// Preserve the existing Hooks rules; compiler rules require a separate app refactor.
+	{
+		plugins: { "react-hooks": pluginReactHooks },
+		rules: {
+			"react-hooks/rules-of-hooks": "error",
+			"react-hooks/exhaustive-deps": "warn",
+		},
+	},
+	pluginNext.configs.recommended,
 ];

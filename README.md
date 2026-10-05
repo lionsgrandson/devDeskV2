@@ -19,10 +19,10 @@ Demo authentication is kept only so the protected dashboard shell works. It will
 
 The frontend is based on [Devias Material Kit React](https://github.com/devias-io/material-kit-react), but most of the demo dashboard surface has been removed.
 
-- Next.js 15
+- Next.js 16
 - React 19
 - TypeScript
-- Material UI 7
+- Material UI 9
 - React Hook Form
 - Zod
 - ApexCharts
@@ -52,6 +52,15 @@ Open:
 ```text
 http://localhost:3000
 ```
+
+Dependency versions are pinned in `package.json`, with both npm and pnpm lockfiles updated.
+Use Node.js 22.13 or newer. ESLint and `@eslint/js` stay on 9.39.5 because the
+React and import plugins do not support ESLint 10; Unicorn stays on 65.0.1 for
+ESLint 9 compatibility. TypeScript stays on 6.0.3 because `typescript-eslint`
+requires TypeScript below 6.1. The Hooks lint configuration retains the existing
+rules-of-hooks and exhaustive-deps checks; React Compiler rules are not enabled.
+
+Validate changes with `pnpm lint`, `pnpm typecheck`, and `pnpm build`.
 
 Demo login:
 
