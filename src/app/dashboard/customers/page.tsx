@@ -27,7 +27,7 @@ export default function Page(): React.JSX.Element {
 					step.
 				</Typography>
 			</Stack>
-			<Button variant="contained" onClick={changePopupState}>
+			<Button variant="contained" onClick={changePopupState} sx={{ width: "15%" }}>
 				New Customer
 			</Button>
 			{showPopUp ? null : <NewCustomerPopup />}

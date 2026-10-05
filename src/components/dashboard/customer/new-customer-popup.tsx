@@ -1,24 +1,30 @@
 import React from "react";
 
+import "@/styles/new-customer-popup.css";
+
 export function NewCustomerPopup(): React.JSX.Element {
 	return (
-		<form>
-			<label>
-				User Name:
-				<input type="text" name="name" />
-			</label>
-			<label>
-				Email:
-				<input type="text" name="	Email" />
-			</label>
-			<label>
-				Phone:
-				<input type="text" name="tel" />
-			</label>
-			<label>
-				Location:
-				<input type="text" name="	Location" />
-			</label>
-		</form>
+		<div className="popupFormDiv">
+			<form className="formClientPopUp">
+				<div className="outderLableDiv">
+					<label>
+						Name:
+						<input type="text" name="name" placeholder="Name" />
+					</label>
+					<label>
+						Email:
+						<input type="text" name="email" placeholder="Email" />
+					</label>
+					<label>
+						Phone:
+						<input type="tel" name="phone" placeholder="Phone" />
+					</label>
+					<label>
+						Location:
+						<input type="text" name="location" placeholder="Location" />
+					</label>
+				</div>
+			</form>
+		</div>
 	);
 }
