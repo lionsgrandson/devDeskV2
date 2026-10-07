@@ -1,6 +1,6 @@
 [
 	{
-		"id": "CLIENT-001",
+		"id": 1,
 		"name": "Demo Client A",
 		"email": "client-a@example.com",
 		"phone": "050-000-0001",
@@ -8,21 +8,21 @@
 	},
 
 	{
-		"id": "CLIENT-002",
+		"id": 2,
 		"name": "Demo Client B",
 		"email": "client-b@example.com",
 		"phone": "050-000-0002",
 		"address": { "city": "Haifa", "country": "Israel" }
 	},
 	{
-		"id": "CLIENT-003",
+		"id": 3,
 		"name": "Demo Client C",
 		"email": "client-c@example.com",
 		"phone": "050-000-0003",
 		"address": { "city": "Jerusalem", "country": "Israel" }
 	},
 	{
-		"id": "CLIENT-004",
+		"id": 4,
 		"name": "Demo Client D",
 		"email": "client-d@example.com",
 		"phone": "050-000-0004",
