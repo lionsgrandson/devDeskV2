@@ -32,3 +32,7 @@
 	border-radius: 1rem;
 	box-shadow: 1px 1px 2px grey;
 }
+.submitBTN {
+	background-color: #635bff;
+	margin-bottom: 1rem;
+}

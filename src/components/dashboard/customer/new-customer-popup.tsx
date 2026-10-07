@@ -17,12 +17,13 @@ export function NewCustomerPopup(): React.JSX.Element {
 					</label>
 					<label>
 						Phone:
-						<input type="tel" name="phone" placeholder="Phone" />
+						<input type="string" name="phone" placeholder="Phone" />
 					</label>
 					<label>
 						Location:
-						<input type="text" name="location" placeholder="Location" />
+						<input type="text" name="location" placeholder="Location" required />
 					</label>
+					<input type="submit" className="submitBTN" />
 				</div>
 			</form>
 		</div>

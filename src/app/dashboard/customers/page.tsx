@@ -28,7 +28,7 @@ export default function Page(): React.JSX.Element {
 				</Typography>
 			</Stack>
 			<Button variant="contained" onClick={changePopupState} sx={{ width: "15%" }}>
-				New Customer
+				{showPopUp ? "New Customer" : "Close"}
 			</Button>
 			{showPopUp ? null : <NewCustomerPopup />}
 			<CustomersTable rows={customers} />
